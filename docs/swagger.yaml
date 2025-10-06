@@ -1,5 +1,7 @@
 info:
-  contact: {}
+  contact: { }
+  version: "v0.1"
+  title: "ARKHAM"
 paths:
   /basic/ping:
     get:
