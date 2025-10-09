@@ -32,8 +32,18 @@ func (processManager *Manager) Append(process Processable) error {
 
 	// start process
 	process.setStatus(Running)
-	go process.Do()
+	go process.Do(process.GetCtx())
 
 	processManager.processes[process.GetID()] = process
 	return nil
+}
+
+func (processManager *Manager) Stop(id string) bool {
+	if p, exists := processManager.Get(id); exists {
+		if cancellable, ok := p.(StopProcess); ok {
+			cancellable.StopProcess(p.GetCancelFunc())
+			return true
+		}
+	}
+	return false
 }

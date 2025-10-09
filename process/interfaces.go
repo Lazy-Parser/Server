@@ -1,13 +1,19 @@
 package process
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 // Processable has a Do function, which is a main function for any task.
 type Processable interface {
-	Do()
+	Do(ctx context.Context)
+
 	GetID() string
 	GetStartAt() time.Time
 	GetStatus() Status
+	GetCtx() context.Context
+	GetCancelFunc() context.CancelFunc
 
 	setStatus(status Status)
 }
@@ -19,7 +25,7 @@ type SetupProcess interface {
 
 // StopProcess has a StopProcess method, calling which the Do will stop
 type StopProcess interface {
-	StopProcess()
+	StopProcess(cancel context.CancelFunc)
 }
 
 // StatsProcess TODO: implement

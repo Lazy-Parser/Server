@@ -1,6 +1,7 @@
 package process
 
 import (
+	"context"
 	"log"
 	"time"
 )
@@ -25,7 +26,7 @@ func NewTimer(title string) *Timer {
 	return timer
 }
 
-func (timer *Timer) Do() {
+func (timer *Timer) Do(ctx context.Context) {
 	for {
 		if timer.isRunning {
 			time.Sleep(time.Second)
@@ -34,7 +35,7 @@ func (timer *Timer) Do() {
 	}
 }
 
-func (timer *Timer) StopProcess() {
+func (timer *Timer) StopProcess(cancel context.CancelFunc) {
 	timer.isRunning = false
 	timer.setStatus(Completed)
 }
