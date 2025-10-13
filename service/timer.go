@@ -31,7 +31,14 @@ func TimerStartHandler(c *gin.Context, pm *process.Manager) {
 func TimerGetHandler(c *gin.Context, pm *process.Manager) {
 	counter := c.Param("id")
 	id := titleWithId(counter)
-	p, _ := pm.Get(id)
+	p, ok := pm.Get(id)
+	if !ok {
+		c.JSON(200, gin.H{
+			"Timer did not found": "",
+		})
+		return
+	}
+
 	timer, ok := p.(*process.Timer)
 	if !ok {
 		c.JSON(200, gin.H{
@@ -42,7 +49,7 @@ func TimerGetHandler(c *gin.Context, pm *process.Manager) {
 
 	c.JSON(200, gin.H{
 		"process": timer.GetID(),
-		"status":  timer.GetTime(),
+		"status": timer.GetTime(),
 	})
 }
 
@@ -65,10 +72,8 @@ func TimerGetAllHandler(c *gin.Context, pm *process.Manager) {
 func TimerStopHandler(c *gin.Context, pm *process.Manager) {
 	counter := c.Param("id")
 	id := titleWithId(counter)
-	p, _ := pm.Get(id)
 
-	if stopable, ok := p.(process.StopProcess); ok {
-		stopable.StopProcess()
+	if ok := pm.Stop(id); ok {
 		TimerGetAllHandler(c, pm)
 	}
 }

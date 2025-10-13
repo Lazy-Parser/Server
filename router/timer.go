@@ -14,7 +14,7 @@ func ApplyTimerRouters(server *gin.Engine, pm *process.Manager) {
 		service.TimerGetHandler(c, pm)
 	})
 	server.GET("/timer/getAll", func(c *gin.Context) {
-		service.TimerGetHandler(c, pm)
+		service.TimerGetAllHandler(c, pm)
 	})
 	server.GET("/timer/stop/:id", func(c *gin.Context) {
 		service.TimerStopHandler(c, pm)

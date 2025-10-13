@@ -13,7 +13,7 @@ type Processable interface {
 	GetStartAt() time.Time
 	GetStatus() Status
 	GetCtx() context.Context
-	GetCancelFunc() context.CancelFunc
+	GetCancel() context.CancelFunc
 
 	setStatus(status Status)
 }

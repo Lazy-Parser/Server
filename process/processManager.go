@@ -41,7 +41,7 @@ func (processManager *Manager) Append(process Processable) error {
 func (processManager *Manager) Stop(id string) bool {
 	if p, exists := processManager.Get(id); exists {
 		if cancellable, ok := p.(StopProcess); ok {
-			cancellable.StopProcess(p.GetCancelFunc())
+			cancellable.StopProcess(p.GetCancel())
 			return true
 		}
 	}
