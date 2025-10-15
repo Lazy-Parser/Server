@@ -33,6 +33,13 @@ http://localhost:8080/swagger/index.html
 
 ---
 
+### Login
+1. Enter login on the site
+2. The Bot will send you one-time password
+3. Enter this password
+
+---
+
 ### Future plans:
 
 - [ ]  Metrics

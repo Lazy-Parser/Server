@@ -1,11 +1,15 @@
 package app
 
 import (
+	"strconv"
+
+	db "github.com/Lazy-Parser/Server/database"
+	"github.com/Lazy-Parser/Server/database/sqlite"
+	"github.com/Lazy-Parser/Server/entity"
 	"github.com/Lazy-Parser/Server/middleware"
 	"github.com/Lazy-Parser/Server/process"
 	r "github.com/Lazy-Parser/Server/router"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
 func DoWork(port int64) error {
@@ -13,11 +17,32 @@ func DoWork(port int64) error {
 	router.Use(middleware.Test()) // Use global middleware. Also, I can apply middleware for the specific endpoint
 
 	pManager := process.NewProcessManager()
+	userRepo, err := database()
+	if err != nil {
+		panic(err)
+	}
+	// create user first
+	err = userRepo.Create(entity.User{
+		Username: "admin",
+	})
+	if err != nil {
+		panic(err)
+	}
 
 	r.ApplySwagger(router)
 	r.ApplyBasicRouters(router)
 	r.ApplyTimerRouters(router, pManager)
+	r.ApplyAuthRouters(router, userRepo)
 
 	portStr := ":" + strconv.FormatInt(port, 10)
 	return router.Run(portStr)
+}
+
+func database() (db.UserRepo, error) {
+	dbSqlite, err := sqlite.Start("database/storage/app.db", sqlite.WithAutoMigrate())
+	if err != nil {
+		return nil, err
+	}
+
+	return db.CreateUserRepo(dbSqlite), nil
 }
