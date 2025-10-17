@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/Lazy-Parser/Server/app"
 	"log"
+
+	"github.com/Lazy-Parser/Server/app"
 )
 
 func main() {

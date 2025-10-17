@@ -1,6 +1,9 @@
 package process
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 type Manager struct {
 	processes map[string]Processable
@@ -27,11 +30,18 @@ func (processManager *Manager) Append(process Processable) error {
 	}
 
 	if setupProcess, ok := process.(SetupProcess); ok {
-		setupProcess.SetupProcess()
+		if err := setupProcess.SetupProcess(process.GetCtx()); err != nil {
+			panic(err)
+		}
 	}
 
 	// start process
 	process.setStatus(Running)
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("recover from panic: %v", r)
+		}
+	}()
 	go process.Do(process.GetCtx())
 
 	processManager.processes[process.GetID()] = process

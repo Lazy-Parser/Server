@@ -19,3 +19,9 @@ type UserRepo interface {
 func CreateUserRepo(db *gorm.DB) UserRepo {
 	return sqlite.CreateUserRepo(db)
 }
+
+type RoleRepo interface {
+	FindById(id uint) (entity.Role, error)
+	FindByName(name string) (entity.Role, error)
+	Create(entity.Role) error
+}

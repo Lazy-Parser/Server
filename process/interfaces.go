@@ -20,7 +20,7 @@ type Processable interface {
 
 // SetupProcess has a SetupProcess method, which will run before the Do function
 type SetupProcess interface {
-	SetupProcess()
+	SetupProcess(ctx context.Context) error
 }
 
 // StopProcess has a StopProcess method, calling which the Do will stop
