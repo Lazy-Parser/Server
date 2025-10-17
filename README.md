@@ -4,10 +4,9 @@ Powered by custom [Core](https://github.com/Lazy-Parser/Collector.git) library.
 
 ---
 
-### Support:
-
-1. Swagger
-2. ?
+### TODO
+- [ ] Mexc exchange already added. Create process router / endpoints to manage processes
+- [ ] Create NATS + some Publisher, ( [Exchange1, exchange2, ...] -> Publisher -> NATS -> [Consumer1, consumer2, ...])   
 
 ---
 
@@ -44,5 +43,5 @@ http://localhost:8080/swagger/index.html
 
 - [ ]  Metrics
 - [ ]  Websockets
-- [ ]  Integrate exchanges from [Core](https://github.com/Lazy-Parser/Collector.git)
+- [ ]  Integrate exchanges from [Core](https://github.com/Lazy-Parser/Collector.git) (50%)
 - [ ]  And a lot more
