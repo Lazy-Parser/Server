@@ -9,6 +9,7 @@ import (
 	"github.com/Lazy-Parser/Server/database/sqlite"
 	"github.com/Lazy-Parser/Server/middleware"
 	"github.com/Lazy-Parser/Server/process"
+	"github.com/Lazy-Parser/Server/publisher"
 	r "github.com/Lazy-Parser/Server/router"
 	"github.com/gin-gonic/gin"
 )
@@ -18,9 +19,13 @@ func DoWork(port int64) error {
 	router.Use(middleware.Test()) // Use global middleware. Also, I can apply middleware for the specific endpoint
 
 	pManager := process.NewProcessManager()
+	pub, err := publisher.NewPublisher("nats://localhost:4222")
+	if err != nil {
+		return err
+	}
 	userRepo, err := database()
 	if err != nil {
-		panic(err)
+		return err
 	}
 	//// create user first
 	//err = userRepo.Create(entity.User{
@@ -34,7 +39,7 @@ func DoWork(port int64) error {
 	r.ApplyBasicRouters(router)
 	r.ApplyTimerRouters(router, pManager)
 	r.ApplyAuthRouters(router, userRepo)
-	r.ApplyExchangeRouters(router, pManager)
+	r.ApplyExchangeRouters(router, pManager, pub)
 
 	portStr := ":" + strconv.FormatInt(port, 10)
 	return router.Run(portStr)

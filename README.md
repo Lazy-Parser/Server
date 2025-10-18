@@ -6,7 +6,8 @@ Powered by custom [Core](https://github.com/Lazy-Parser/Collector.git) library.
 
 ### TODO
 - [ ] Mexc exchange already added. Create process router / endpoints to manage processes
-- [ ] Create NATS + some Publisher, ( [Exchange1, exchange2, ...] -> Publisher -> NATS -> [Consumer1, consumer2, ...])   
+- [ ] NATS
+- [ ] Protobuf + NATS 
 
 ---
 
